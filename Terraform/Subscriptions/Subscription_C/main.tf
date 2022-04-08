@@ -18,4 +18,5 @@ module "Networking" {
   sub_name       = local.sub_name
   resource_group = azurerm_resource_group.example
   address_space  = local.address_space
+  priority       = 105
 }
