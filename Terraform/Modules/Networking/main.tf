@@ -25,7 +25,7 @@ resource "azurerm_subnet_network_security_group_association" "example" {
 
 resource "azurerm_network_security_rule" "example" {
   name                        = "test123"
-  priority                    = 100
+  priority                    = var.priority
   direction                   = "Outbound"
   access                      = "Allow"
   protocol                    = "Tcp"
@@ -33,6 +33,7 @@ resource "azurerm_network_security_rule" "example" {
   destination_port_range      = "80"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  resource_group_name         = "subscription_1"
-  network_security_group_name = "Sub_1_NSG"
+  resource_group_name         = var.sub_name
+  network_security_group_name = azurerm_network_security_group.example.name
 }
+
