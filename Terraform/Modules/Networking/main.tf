@@ -65,6 +65,6 @@ resource "azurerm_subnet_network_security_group_association" "example" {
 
 resource "null_resource" "nsg_rule" {
   provisioner "local-exec" {
-    command = "az network nsg rule create -g ${local.nsg_rule.resource_group_name} --nsg-name ${local.nsg_rule.network_security_group_name} -n ${local.nsg_rule.name} --priority ${local.nsg_rule.priority} --source-address-prefix ${local.nsg_rule.source_address_prefix} --source-port-range ${local.nsg_rule.source_port_range} --destination-address-prefix ${local.nsg_rule.destination_address_prefix} --destination-port-range ${local.nsg_rule.destination_port_range} --access ${local.nsg_rule.access} --protocol ${local.nsg_rule.protocol} "
+    command = "az network nsg rule create -g ${local.nsg_rule.resource_group_name} --nsg-name ${local.nsg_rule.network_security_group_name} -n ${local.nsg_rule.name} --priority ${local.nsg_rule.priority} --source-address-prefix ${local.nsg_rule.source_address_prefix} --source-port-range ${local.nsg_rule.source_port_range} --destination-address-prefix ${local.nsg_rule.destination_address_prefix} --destination-port-range ${local.nsg_rule.destination_port_range} --access ${local.nsg_rule.access} --protocol ${local.nsg_rule.protocol} --direction ${local.nsg_rule.direction}"
   }
 }
