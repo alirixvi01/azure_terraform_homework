@@ -25,22 +25,24 @@ data "azurerm_network_security_group" "nsg" {
 
 variable "nsg" {
   default = {
-    name                        = "test1234"
-    direction                   = "Outbound"
-    access                      = "Allow"
-    protocol                    = "Tcp"
-    source_port_range           = "*"
-    destination_port_range      = "80"
-    source_address_prefix       = "*"
-    destination_address_prefix  = "*"
-    resource_group_name         = "Subscription_A"
-    network_security_group_name = "Sub_A_NSG"
+    name                         = "test1234"
+    direction                    = "Outbound"
+    access                       = "Allow"
+    protocol                     = "Tcp"
+    source_port_range            = "*"
+    destination_port_range       = "80"
+    source_address_prefix        = "*"
+    destination_address_prefix = "*"
+    resource_group_name          = "Subscription_A"
+    network_security_group_name  = "Sub_A_NSG"
   }
 }
 
+
 locals {
   priority_list = data.azurerm_network_security_group.nsg.security_rule.*.priority
-  nsg_rule = flatten([for x in range(local.priority_list[0], 1024, 1) : {
+  #priority = sort([for x in local.priority_list: element(local.priority_list, index(local.priority_list, x)) + 1 if (element(local.priority_list, index(local.priority_list, x) + 1) - element(local.priority_list, index(local.priority_list, x))) == 2 ])[0]
+  nsg_rule = flatten([for x in range(100, 1024, 1) : {
     name                        = "${var.nsg.direction}-${var.nsg.protocol}-${var.nsg.destination_port_range}-${var.nsg.access}-${x}"
     priority                    = x
     direction                   = var.nsg.direction
@@ -55,7 +57,6 @@ locals {
     } if !contains(local.priority_list, x)
   ])[0]
 }
-
 
 resource "azurerm_subnet_network_security_group_association" "example" {
   subnet_id                 = azurerm_subnet.example.id
